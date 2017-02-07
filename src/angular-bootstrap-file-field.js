@@ -26,18 +26,20 @@ angular.module('bootstrap.fileField',[])
         }
 
         fileField.bind('change', function(event){
-            scope.$evalAsync(function () {
-              ngModel.$setViewValue(event.target.files[0]);
-              if(attrs.preview){
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    scope.$evalAsync(function(){
-                        scope[attrs.preview]=e.target.result;
-                    });
-                };
-                reader.readAsDataURL(event.target.files[0]);
-              }
-            });
+            if(event.target.files.length > 0) {
+                scope.$evalAsync(function () {
+                  ngModel.$setViewValue(event.target.files[0]);
+                  if(attrs.preview){
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        scope.$evalAsync(function(){
+                            scope[attrs.preview]=e.target.result;
+                        });
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                  }
+                });
+            }
         });
         fileField.bind('click',function(e){
             e.stopPropagation();
